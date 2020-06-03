@@ -6,7 +6,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
@@ -23,20 +25,16 @@ public class MainPage extends BasePage {
     WebElement exitFromAccount;
     @FindBy (xpath = "//span//img[@class='arrow']")
     WebElement userAccountPageElement;
-    @FindBy (xpath = "//div[@class='ember-view header-search-bar home']")
-    WebElement dropdownMenuArea;
 
-// ----------------------------------------
-    @FindBy (xpath = "//div[@class='chosen-drop']//li[contains(text(),'99')]")
-    WebElement selectPrice;
-    @FindBy (xpath = "//form[@class='form ember-view']//span[contains(text(),'סכום')]")
-    WebElement priceMenu;
-    @FindBy (xpath = "//a[@class='chosen-single']/span[@xpath='1']")
-    WebElement areaMenu;
-    @FindBy (xpath = "//div[@class='chosen-drop']/ul/li[contains(text(),'מרכז')]")
-    WebElement selectArea;
-    @FindBy (xpath = "/html[1]/body[1]/div[2]/div[1]/header[1]/div[3]/div[1]/form[1]/div[1]/a[1]/span[1]")
+    @FindBy (xpath = "/html[1]/body[1]/div[1]/div[1]/header[1]/div[3]/div[1]/form[1]/div[1]/div[1]/ul[1]/li[3]")
     WebElement price;
+    @FindBy (xpath = "/html[1]/body[1]/div[1]/div[1]/header[1]/div[3]/div[1]/form[1]/div[2]/div[1]/ul[1]/li[3]")
+    WebElement area;
+    @FindBy (xpath = "/html[1]/body[1]/div[1]/div[1]/header[1]/div[3]/div[1]/form[1]/div[3]/div[1]/ul[1]/li[2]")
+    WebElement category;
+
+    public static final By DROP_MENU = By.className("chosen-single");
+
 // -------------------------------------------
 
     @FindBy (xpath = "//a[@class='ui-btn search ember-view']")
@@ -80,40 +78,27 @@ public class MainPage extends BasePage {
 
     public MainPage dropDownMenu()
     {
-        
-        return this;
-    }
+        List<WebElement> dropDownList = driver.findElements(DROP_MENU);
+        WebElement priceMenu = dropDownList.get(0);
+        WebElement areaMenu = dropDownList.get(1);
+        WebElement categoryMenu = dropDownList.get(2);
 
-    public MainPage pickPrice()
-    {
-//        action.moveToElement(priceMenu).click().build().perform();
-//
-//    //    WebElement pick = driver.findElement(By.xpath("//div[@class='chosen-drop']//li[contains(text(),'" + price + "')]"));
-//        action.moveToElement(selectPrice).build().perform();
-//        System.out.println(selectPrice.getText());
-//        //selectPrice.click();
+        WebDriverWait wait = new WebDriverWait(driver,3);
+        priceMenu.click();
+        waitUntilElementIsloaded(driver,price,20);
+        price.click();
 
-       waitUntilElementIsVisible(driver,price,20);
-//       price.click();
-
-        List<WebElement> allPrices = driver.findElements(By.xpath("/html[1]/body[1]/div[2]/div[1]/header[1]/div[3]/div[1]/form[1]/div[1]/div[1]/ul[1]/li"));
-
-        System.out.println( allPrices.get(3).getText());
-        allPrices.get(3).click();
-
-        return this;
-    }
-
-    public MainPage pickArea()
-    {
-        waitUntilElementIsVisible(driver,dropdownMenuArea,20);
-        action.moveToElement(dropdownMenuArea).build().perform();
-
-        waitUntilElementIsVisible(driver, areaMenu, 20);
         areaMenu.click();
-        selectArea.click();
+        waitUntilElementIsloaded(driver,area,20);
+        area.click();
+
+        categoryMenu.click();
+        waitUntilElementIsloaded(driver, category, 20);
+        category.click();
+
         return this;
     }
+
 
     public MainPage clickOn_FindGift_Button()
     {

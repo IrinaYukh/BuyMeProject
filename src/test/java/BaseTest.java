@@ -33,8 +33,6 @@ public class BaseTest {
         url = ReadConfigFile.getProperties("url");
         getWebDriver();
         driver.get(url);
-//        driver.get("https://buyme.co.il/");
-
 
         // ExtentReports customization
         ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(System.getProperty("user.dir")+"src/reports/extent.html");

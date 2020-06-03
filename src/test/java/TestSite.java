@@ -106,7 +106,10 @@ public class TestSite extends BaseTest {
         {
             System.out.println(" You present on Login Main Page");
 
-        mainPage.pickPrice();
+        mainPage.dropDownMenu();
+        mainPage.clickOn_FindGift_Button();
+
+
         }
 
     }
