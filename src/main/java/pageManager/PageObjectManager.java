@@ -1,10 +1,7 @@
 package pageManager;
 
 import org.openqa.selenium.WebDriver;
-import pages.BasePage;
-import pages.LoginPage;
-import pages.MainPage;
-import pages.RegistrationPage;
+import pages.*;
 
 public class PageObjectManager extends BasePage {
 
@@ -12,6 +9,8 @@ public class PageObjectManager extends BasePage {
     private MainPage mainPage;
     private RegistrationPage registration;
     private LoginPage loginPage;
+    private GiftPage giftPage;
+    private OrderPage orderPage;
 
     public PageObjectManager(WebDriver driver) {
         super(driver);
@@ -30,6 +29,14 @@ public class PageObjectManager extends BasePage {
     {
         return  (loginPage == null) ? loginPage = new LoginPage(driver) : loginPage;
     }
+    public GiftPage getGiftPage()
+    {
+        return (giftPage == null) ? giftPage = new GiftPage(driver) : giftPage;
+    }
 
+    public OrderPage getOrderPage()
+    {
+        return (orderPage == null) ? orderPage = new OrderPage(driver) : orderPage;
+    }
 
 }

@@ -3,9 +3,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import pageManager.PageObjectManager;
-import pages.LoginPage;
-import pages.MainPage;
-import pages.RegistrationPage;
+import pages.*;
 import pages.testDataCreator.TestDataCreator;
 
 import java.io.IOException;
@@ -17,6 +15,8 @@ public class TestSite extends BaseTest {
     private MainPage mainPage;
     private RegistrationPage registration;
     private LoginPage loginPage;
+    private GiftPage giftPage;
+    private OrderPage orderPage;
 
     // Creating variables with values from config file for testing
     String mail = ReadConfigFile.getProperties("mail");
@@ -39,6 +39,8 @@ public class TestSite extends BaseTest {
         mainPage = pageManager.getMainPage();
         registration = pageManager.getRegistrationPage();
         loginPage = pageManager.getLoginPage();
+        giftPage = pageManager.getGiftPage();
+        orderPage = pageManager.getOrderPage();
     }
 
     @Test
@@ -53,7 +55,6 @@ public class TestSite extends BaseTest {
             6. Verifying that move on Main Page in LoginUser status
          */
 
-
         mainPage.isOnPage()
                 .clickOnRegistrationButton();
         registration.isOnPage()
@@ -63,7 +64,6 @@ public class TestSite extends BaseTest {
                     .confirmPassword(validPassword)
                     .submitRegistration();
         Assert.assertTrue("You're submitted like User ", mainPage.isOnUserAccountPage());
-
     }
 
     @Test
@@ -77,7 +77,6 @@ public class TestSite extends BaseTest {
             4. Skip input values to the fields and press submit Login button
             5. Verifying Error message getting
          */
-
 
         if (mainPage.isOnUserAccountPage())
         {
@@ -94,6 +93,15 @@ public class TestSite extends BaseTest {
     @Test
     public void orderCreation()
     {
+        /*
+            Positive test : Verify successful order creation
+            1. Verify that logged as registered User
+            2. Choose price, area and category of Order from drop-down menus
+            3. Push submit button
+
+
+         */
+
         if (!mainPage.isOnUserAccountPage())
         {
             mainPage.clickOnRegistrationButton();
@@ -106,33 +114,18 @@ public class TestSite extends BaseTest {
         {
             System.out.println(" You present on Login Main Page");
 
-        mainPage.dropDownMenu();
-        mainPage.clickOn_FindGift_Button();
+        mainPage.dropDownMenu()
+                .clickOn_FindGift_Button();
+        giftPage.returnURL();
+        Assert.assertTrue("Successful redirect on the page for Gift choose",giftPage.isOnPage());
+        giftPage.selectGiftAdv();
+        Assert.assertTrue("Successful redirect to the Order Page", orderPage.isOnPage());
 
 
         }
 
     }
 
-    @Test
-    public void orderCreationWithoutFilter()
-    {
-        if (!mainPage.isOnUserAccountPage())
-        {
-            mainPage.clickOnRegistrationButton();
-            loginPage.isOnLoginForm()
-                    .enterMail(mail)
-                    .enterPassword(password)
-                    .submitLogin();
-        }
-        if (mainPage.isOnUserAccountPage())
-        {
-            System.out.println(" You present on Login Main Page");
-
-            mainPage.clickOn_FindGift_Button();
-
-        }
-    }
 
 
 

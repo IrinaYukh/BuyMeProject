@@ -6,13 +6,17 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
 public class MainPage extends BasePage {
+
+    public MainPage(WebDriver driver)
+    {
+        super(driver);
+        PageFactory.initElements(driver,this);
+    }
 
     Actions action = new Actions(driver);
     @FindBy (xpath = "//header[@class='m-page-header']//li[3]")
@@ -40,13 +44,6 @@ public class MainPage extends BasePage {
     @FindBy (xpath = "//a[@class='ui-btn search ember-view']")
     WebElement findGiftButton;
 
-
-
-    public MainPage(WebDriver driver)
-    {
-        super(driver);
-        PageFactory.initElements(driver,this);
-    }
 
     public MainPage isOnPage()
     {
