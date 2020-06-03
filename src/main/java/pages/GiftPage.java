@@ -36,8 +36,7 @@ public class GiftPage extends BasePage
 
     public GiftPage returnURL()
     {
-        String result = linkURL.getText();
-        System.out.println("Link of current page is " + result);
+        System.out.println("Link of current page is " + linkURL.getText());
         return this;
     }
 

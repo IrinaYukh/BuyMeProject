@@ -120,6 +120,9 @@ public class TestSite extends BaseTest {
         Assert.assertTrue("Successful redirect on the page for Gift choose",giftPage.isOnPage());
         giftPage.selectGiftAdv();
         Assert.assertTrue("Successful redirect to the Order Page", orderPage.isOnPage());
+ //       orderPage.textColor();
+        orderPage.inputReceiverName("John")
+                .pickEvent();
 
 
         }
