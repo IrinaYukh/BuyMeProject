@@ -11,6 +11,7 @@ public class PageObjectManager extends BasePage {
     private LoginPage loginPage;
     private GiftPage giftPage;
     private OrderPage orderPage;
+    private PaymentPage paymentPage;
 
     public PageObjectManager(WebDriver driver) {
         super(driver);
@@ -38,5 +39,8 @@ public class PageObjectManager extends BasePage {
     {
         return (orderPage == null) ? orderPage = new OrderPage(driver) : orderPage;
     }
-
+    public PaymentPage getPaymentPage()
+    {
+        return (paymentPage == null) ? paymentPage = new PaymentPage(driver) : paymentPage;
+    }
 }

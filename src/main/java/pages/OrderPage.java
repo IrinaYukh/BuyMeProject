@@ -1,6 +1,7 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -8,6 +9,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
 import java.util.List;
 
 public class OrderPage extends BasePage
@@ -29,13 +31,26 @@ public class OrderPage extends BasePage
     @FindBy (xpath = "//body[@class='rtl desktop chrome ember-application hover']/div[@class='ember-view']/div[contains(@class,'main-container inner-page-offset')]/div[@class='application-main']/form[@class='ember-view']/div[@class='step-wrapper step-2-wrapper card-form-layout relative']/div[@class='wrapper relative top']/div[@class='row']/div[@class='data-col']/div[@class='step-form-wrapper relative']/div[@class='ember-view step-form']/div[@class='ember-view ui-card']/div[@class='ui-grid']/div[@class='mx2 md1']/label[1]/input[1]")
     WebElement receiverName;
 
+    @FindBy (xpath = "//input[@name='fileUpload']")
+    WebElement photoUpload;
+
+    @FindBy (xpath = "//div[@class='ember-view step-form']//div[2]//div[1]//button[1]")
+    WebElement emailEnvelope;
+
+    @FindBy (xpath = "//h3[@class='section-title'][contains(text(),'?')]")
+    WebElement mailForm;
+
+    @FindBy (xpath = "//input[@placeholder='כתובת המייל של מקבל/ת המתנה']")
+    WebElement mailField;
+
+    @FindBy(xpath = "//button[@class='btn btn-theme btn-save']")
+    WebElement submitMailButton;
+
+    @FindBy (xpath = "//button[contains(@class,'ui-btn orange large')]")
+    WebElement sendOrderButton;
+
     public static final By EVENT = By.className("chosen-single");
 
-    @FindBy (xpath = "//li[@class='active-result highlighted' and @data-option-array-index='3']")
-    WebElement eventBirthday;
-
-    @FindBy (xpath = "//div[@class='chosen-container chosen-container-single ember-view ember-chosenselect form-control chosen-rtl chosen-rtl chosen-container-active chosen-with-drop']//input")
-    WebElement inputTextEvent;
 
     public boolean isOnPage()
     {
@@ -63,14 +78,45 @@ public class OrderPage extends BasePage
 
         action.moveToElement(event).build().perform();
         event.click();
-        action.moveToElement(inputTextEvent).build().perform();
-        type(inputTextEvent,"לידה");
+        action.sendKeys(Keys.ARROW_DOWN).click().build().perform();
+        return this;
+    }
 
-//        waitUntilElementIsloaded(driver,eventBirthday,20);
-//        type(eventBirthday,"לידה");
+    public OrderPage uploadPhoto(String photoUrl)
+    {
+        String projectPath = System.getProperty("user.dir");
+        String imagePath = projectPath + photoUrl;
+        action.moveToElement(photoUpload).build().perform();
+        photoUpload.sendKeys(imagePath);
 
         return this;
     }
+
+    public OrderPage sendGiftByMail(String emailAddress)
+    {
+        waitUntilElementIsClickable(driver, emailEnvelope, 10);
+        emailEnvelope.click();
+
+        waitUntilElementIsClickable(driver,mailForm,10);
+
+        action.moveToElement(mailField).build().perform();
+        type(mailField, emailAddress);
+
+        waitUntilElementIsClickable(driver,submitMailButton,10);
+        submitMailButton.click();
+
+      return this;
+    }
+
+    public OrderPage sendOrderToReceiver()
+    {
+        waitUntilElementIsVisible(driver, sendOrderButton, 10);
+        action.moveToElement(sendOrderButton).click().build().perform();
+
+        return this;
+    }
+
+
 
 
 

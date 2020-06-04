@@ -17,6 +17,7 @@ public class TestSite extends BaseTest {
     private LoginPage loginPage;
     private GiftPage giftPage;
     private OrderPage orderPage;
+    private PaymentPage paymentPage;
 
     // Creating variables with values from config file for testing
     String mail = ReadConfigFile.getProperties("mail");
@@ -41,6 +42,7 @@ public class TestSite extends BaseTest {
         loginPage = pageManager.getLoginPage();
         giftPage = pageManager.getGiftPage();
         orderPage = pageManager.getOrderPage();
+        paymentPage = pageManager.getPaymentPage();
     }
 
     @Test
@@ -122,7 +124,13 @@ public class TestSite extends BaseTest {
         Assert.assertTrue("Successful redirect to the Order Page", orderPage.isOnPage());
  //       orderPage.textColor();
         orderPage.inputReceiverName("John")
-                .pickEvent();
+                .pickEvent()
+                .uploadPhoto("/src/configFiles/birthday.jpeg")
+                .sendGiftByMail("john@mail.com")
+                .sendOrderToReceiver();
+        Assert.assertTrue("Successful order creation" , paymentPage.isOnPage());
+
+
 
 
         }
