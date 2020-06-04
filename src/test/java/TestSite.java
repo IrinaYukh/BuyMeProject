@@ -57,8 +57,8 @@ public class TestSite extends BaseTest {
             6. Verifying that move on Main Page in LoginUser status
          */
 
-        mainPage.isOnPage()
-                .clickOnRegistrationButton();
+        mainPage.isOnPage();
+        mainPage.clickOnRegistrationButton();
         registration.isOnPage()
                     .enterUsername(validUser)
                     .enterMail(validMail)
@@ -75,24 +75,22 @@ public class TestSite extends BaseTest {
     {
         /*
             Negative Test : Successful verification impossibilities of Login with wrong values
-            1. Verifying that Main Page status is not private. If private, need to log out from it.
+            1. Verifying that Main Page status is not private.
             2. Click on Login button
             3. Verifying that is on Login Form
             4. Skip input values to the fields and press submit Login button
             5. Verifying Error message getting
          */
 
-        if (mainPage.isOnUserAccountPage())
-        {
-            mainPage.userLogout()
-                    .isOnPage();
-
-        }
-        mainPage.isOnPage()
-                .clickOnRegistrationButton();
+        mainPage.isOnPage();
+        mainPage.clickOnRegistrationButton();
         loginPage.isOnLoginForm()
-                .submitLogin();
+                 .clickLoginButton()
+                 .submitLogin();
         Assert.assertTrue(loginPage.isLoginErrorMessagePresent());
+        // post-condition Close Login Form window
+        loginPage.closeLoginPage();
+        Assert.assertTrue("Login Form closed successfully!",mainPage.isOnPage());
     }
 
 

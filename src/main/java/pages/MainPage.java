@@ -12,12 +12,7 @@ import java.util.List;
 
 public class MainPage extends BasePage {
 
-    public MainPage(WebDriver driver)
-    {
-        super(driver);
-        PageFactory.initElements(driver,this);
-    }
-
+    public static final By DROP_MENU = By.className("chosen-single");
     Actions action = new Actions(driver);
 
     @FindBy (xpath = "//header[@class='m-page-header']//li[3]")
@@ -37,20 +32,21 @@ public class MainPage extends BasePage {
     WebElement area;
     @FindBy (xpath = "/html[1]/body[1]/div[1]/div[1]/header[1]/div[3]/div[1]/form[1]/div[3]/div[1]/ul[1]/li[2]")
     WebElement category;
-
-    public static final By DROP_MENU = By.className("chosen-single");
-
-// -------------------------------------------
-
     @FindBy (xpath = "//a[@class='ui-btn search ember-view']")
     WebElement findGiftButton;
 
+// -------------------------------------------
 
-    public MainPage isOnPage()
+    public MainPage(WebDriver driver)
+    {
+        super(driver);
+        PageFactory.initElements(driver,this);
+    }
+
+    public boolean isOnPage()
     {
         waitUntilElementIsVisible(driver,loginRegistrationButton,10);
-        isElementPresent(loginRegistrationButton);
-        return this;
+        return isElementPresent(loginRegistrationButton);
     }
 
     public MainPage clickOnRegistrationButton()

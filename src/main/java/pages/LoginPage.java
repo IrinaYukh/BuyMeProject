@@ -2,6 +2,7 @@ package pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
@@ -12,6 +13,8 @@ public class LoginPage extends BasePage
         super(driver);
         PageFactory.initElements(driver, this);
     }
+
+    Actions action = new Actions(driver);
 
     @FindBy (xpath = "//div[@class='lightbox-head']")
     WebElement loginForm;
@@ -28,12 +31,24 @@ public class LoginPage extends BasePage
     @FindBy (xpath = "//div[@class='field']//li[@class='parsley-required'][contains(text(),'!')]")
     WebElement loginErrorMessage;
 
+    @FindBy (xpath = "//img[contains(@class,'ember-view')]")
+    WebElement shutLoginForm;
+
+    @FindBy (xpath = "//span[contains(@class,'text-btn')]")
+    WebElement loginButtonOnRegistrationForm;
+
 
 
     public LoginPage isOnLoginForm()
     {
         waitUntilElementIsloaded(driver, loginForm, 10);
         isElementPresent(loginForm);
+        return this;
+    }
+
+    public LoginPage clickLoginButton()
+    {
+        action.moveToElement(loginButtonOnRegistrationForm).click().build().perform();
         return this;
     }
 
@@ -62,5 +77,11 @@ public class LoginPage extends BasePage
     {
         waitUntilElementIsVisible(driver,loginErrorMessage,10);
         return isElementPresent(loginErrorMessage);
+    }
+
+    public LoginPage closeLoginPage()
+    {
+        shutLoginForm.click();
+        return this;
     }
 }

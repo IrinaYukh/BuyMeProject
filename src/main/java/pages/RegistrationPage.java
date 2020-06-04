@@ -37,6 +37,7 @@ public class RegistrationPage extends BasePage {
     @FindBy (xpath = "//button[@class='ui-btn orange large'][@type='submit']")
     WebElement submitRegistrationButton;
 
+
     public RegistrationPage isOnPage()
     {
         action.moveToElement(registrationLink).click().build().perform();
