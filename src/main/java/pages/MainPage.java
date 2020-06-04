@@ -19,11 +19,12 @@ public class MainPage extends BasePage {
     }
 
     Actions action = new Actions(driver);
+
     @FindBy (xpath = "//header[@class='m-page-header']//li[3]")
     WebElement loginRegistrationButton;
     @FindBy (xpath = "//header[@class='m-page-header']//span[2]")
     WebElement registrationButton;
-    @FindBy (xpath = "//li[@class='ember-view dropdown']//span[contains(text(),'החשבון שלי')]")
+    @FindBy (xpath = "//li[contains(@class,'ember-view dropdown')]")
     WebElement userAccountButton;
     @FindBy (xpath = "//a[@class='dropdown-item']//span")
     WebElement exitFromAccount;
@@ -66,8 +67,9 @@ public class MainPage extends BasePage {
 
     public MainPage userLogout ()
     {
+        waitUntilElementIsloaded(driver,userAccountButton,20);
         action.moveToElement(userAccountButton).build().perform();
-        userAccountButton.click();
+//        userAccountButton.click();
         action.moveToElement(exitFromAccount).build().perform();
         exitFromAccount.click();
         return this;

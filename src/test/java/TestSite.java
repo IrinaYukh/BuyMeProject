@@ -46,7 +46,7 @@ public class TestSite extends BaseTest {
     }
 
     @Test
-    public void userRegistration()
+    public void a_userRegistration()
     {
         /* Positive Test : Successful new User registration with valid values.
             1. Verifying that is on the Main Page
@@ -66,10 +66,12 @@ public class TestSite extends BaseTest {
                     .confirmPassword(validPassword)
                     .submitRegistration();
         Assert.assertTrue("You're submitted like User ", mainPage.isOnUserAccountPage());
+        mainPage.userLogout()
+                .isOnPage();
     }
 
     @Test
-    public void invalidUserLogin()
+    public void b_invalidUserLogin()
     {
         /*
             Negative Test : Successful verification impossibilities of Login with wrong values
@@ -82,7 +84,9 @@ public class TestSite extends BaseTest {
 
         if (mainPage.isOnUserAccountPage())
         {
-            mainPage.userLogout();
+            mainPage.userLogout()
+                    .isOnPage();
+
         }
         mainPage.isOnPage()
                 .clickOnRegistrationButton();
@@ -93,7 +97,7 @@ public class TestSite extends BaseTest {
 
 
     @Test
-    public void orderCreation()
+    public void c_orderCreation()
     {
         /*
             Positive test : Verify successful order creation
