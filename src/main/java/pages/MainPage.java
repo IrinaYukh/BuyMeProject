@@ -12,8 +12,11 @@ import java.util.List;
 
 public class MainPage extends BasePage {
 
-    public static final By DROP_MENU = By.className("chosen-single");
     Actions action = new Actions(driver);
+
+    /** Web Elements ---------------------- */
+
+    public static final By DROP_MENU = By.className("chosen-single");
 
     @FindBy (xpath = "//header[@class='m-page-header']//li[3]")
     WebElement loginRegistrationButton;
@@ -35,7 +38,7 @@ public class MainPage extends BasePage {
     @FindBy (xpath = "//a[@class='ui-btn search ember-view']")
     WebElement findGiftButton;
 
-// -------------------------------------------
+    /** Page Methods ------------------*/
 
     public MainPage(WebDriver driver)
     {

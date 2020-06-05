@@ -17,6 +17,8 @@ public class GiftPage extends BasePage
 
     Actions action = new Actions(driver);
 
+    /** Web Elements ---------------------- */
+
     @FindBy (xpath = "//header[@class='m-page-header second-header']")
     WebElement giftPageHeader;
 
@@ -26,13 +28,13 @@ public class GiftPage extends BasePage
     @FindBy (xpath = "//body[@class='rtl desktop chrome ember-application hover']/div[@class='ember-view']/div[contains(@class,'main-container inner-page-offset')]/div[@class='application-main']/div[@class='wrapper']/div[@class='card-items']/div[1]/a[1]/div[1]")
     WebElement giftScreen;
 
+    /** Page Methods ------------------*/
 
     public boolean isOnPage()
     {
         waitUntilElementIsloaded(driver,giftPageHeader,20);
         return isElementPresent(giftPageHeader);
     }
-
 
     public GiftPage returnURL()
     {
@@ -46,12 +48,6 @@ public class GiftPage extends BasePage
         giftScreen.click();
         return this;
     }
-
-
-
-
-
-
 
 
 

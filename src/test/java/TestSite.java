@@ -1,4 +1,5 @@
 import config.ReadConfigFile;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -84,9 +85,11 @@ public class TestSite extends BaseTest {
 
         mainPage.isOnPage();
         mainPage.clickOnRegistrationButton();
-        loginPage.isOnLoginForm()
-                 .clickLoginButton()
-                 .submitLogin();
+        loginPage.isOnLoginForm();
+        if (loginPage.isOnRegistrationForm()) {
+                 loginPage.clickLoginButton();
+        }
+        loginPage.submitLogin();
         Assert.assertTrue(loginPage.isLoginErrorMessagePresent());
         // post-condition Close Login Form window
         loginPage.closeLoginPage();
@@ -120,7 +123,7 @@ public class TestSite extends BaseTest {
 
         mainPage.dropDownMenu()
                 .clickOn_FindGift_Button();
-        giftPage.returnURL();
+//        giftPage.returnURL();
         Assert.assertTrue("Successful redirect on the page for Gift choose",giftPage.isOnPage());
         giftPage.selectGiftAdv();
         Assert.assertTrue("Successful redirect to the Order Page", orderPage.isOnPage());
@@ -131,15 +134,9 @@ public class TestSite extends BaseTest {
                 .sendGiftByMail("john@mail.com")
                 .sendOrderToReceiver();
         Assert.assertTrue("Successful order creation" , paymentPage.isOnPage());
-
-
-
-
         }
 
     }
-
-
 
 
 

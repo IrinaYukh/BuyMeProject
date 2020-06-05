@@ -16,6 +16,8 @@ public class LoginPage extends BasePage
 
     Actions action = new Actions(driver);
 
+    /** Web Elements ---------------------- */
+
     @FindBy (xpath = "//div[@class='lightbox-head']")
     WebElement loginForm;
 
@@ -37,13 +39,22 @@ public class LoginPage extends BasePage
     @FindBy (xpath = "//span[contains(@class,'text-btn')]")
     WebElement loginButtonOnRegistrationForm;
 
+    @FindBy (xpath = "//input[contains(@placeholder,'שם פרטי')]")
+    WebElement userName;
 
+    /** Page Methods ------------------*/
 
     public LoginPage isOnLoginForm()
     {
         waitUntilElementIsloaded(driver, loginForm, 10);
         isElementPresent(loginForm);
         return this;
+    }
+
+    public boolean isOnRegistrationForm()
+    {
+        waitUntilElementIsloaded(driver,userName,10);
+        return isElementPresent(userName);
     }
 
     public LoginPage clickLoginButton()

@@ -22,6 +22,8 @@ public class OrderPage extends BasePage
 
     Actions action = new Actions(driver);
 
+    /** Web Elements ---------------------- */
+
     @FindBy(xpath = "//body[@class='rtl desktop chrome ember-application hover']/div[@class='ember-view']/div[contains(@class,'main-container inner-page-offset')]/div[@class='application-main']/div[@class='wrapper']/ul[@class='ember-view purchase-steps']/li[2]/div[1]/div[2]")
     WebElement text2;
 
@@ -51,6 +53,7 @@ public class OrderPage extends BasePage
 
     public static final By EVENT = By.className("chosen-single");
 
+    /** Page Methods ---------------------- */
 
     public boolean isOnPage()
     {

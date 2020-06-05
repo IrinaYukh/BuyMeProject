@@ -12,8 +12,12 @@ public class PaymentPage extends BasePage
         PageFactory.initElements(driver, this);
     }
 
+    /** Web Elements ---------------------- */
+
     @FindBy (xpath = "//button[contains(text(),'PayPal')]")
     WebElement iconPayPal;
+
+    /** Page Methods ---------------------- */
 
     public boolean isOnPage()
     {

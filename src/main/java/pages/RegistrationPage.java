@@ -1,6 +1,5 @@
 package pages;
 
-import config.ReadConfigFile;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -15,6 +14,8 @@ public class RegistrationPage extends BasePage {
     }
 
     Actions action = new Actions(driver);
+
+    /** Web Elements ---------------------- */
 
     @FindBy (xpath = "//span[@class='text-btn']")
     WebElement registrationLink;
@@ -37,6 +38,8 @@ public class RegistrationPage extends BasePage {
     @FindBy (xpath = "//button[@class='ui-btn orange large'][@type='submit']")
     WebElement submitRegistrationButton;
 
+
+    /** Page Methods ---------------------- */
 
     public RegistrationPage isOnPage()
     {
