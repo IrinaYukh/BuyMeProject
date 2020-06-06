@@ -1,5 +1,7 @@
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.Status;
 import config.ReadConfigFile;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +21,10 @@ public class TestSite extends BaseTest {
     private GiftPage giftPage;
     private OrderPage orderPage;
     private PaymentPage paymentPage;
+
+    /** Extent Report -----------------*/
+    static ExtentTest logger;
+
 
     // Creating variables with values from config file for testing
     String mail = ReadConfigFile.getProperties("mail");
@@ -44,6 +50,8 @@ public class TestSite extends BaseTest {
         giftPage = pageManager.getGiftPage();
         orderPage = pageManager.getOrderPage();
         paymentPage = pageManager.getPaymentPage();
+
+
     }
 
     @Test
@@ -58,17 +66,41 @@ public class TestSite extends BaseTest {
             6. Verifying that move on Main Page in LoginUser status
          */
 
-        mainPage.isOnPage();
-        mainPage.clickOnRegistrationButton();
-        registration.isOnPage()
+        logger = extent.createTest("Test 1. Positive : User registration with valid values.");
+
+        boolean execute = false;
+
+        try {
+            mainPage.isOnPage();
+            mainPage.clickOnRegistrationButton();
+            logger.log(Status.INFO, "Moving to new User Registration form");
+            registration.isOnPage()
                     .enterUsername(validUser)
                     .enterMail(validMail)
                     .enterPassword(validPassword)
                     .confirmPassword(validPassword)
                     .submitRegistration();
-        Assert.assertTrue("You're submitted like User ", mainPage.isOnUserAccountPage());
-        mainPage.userLogout()
-                .isOnPage();
+            logger.log(Status.INFO, "New User Registration Form filled with valid values");
+            Assert.assertTrue("You're submitted like User ", mainPage.isOnUserAccountPage());
+            logger.log(Status.INFO, "Successful new User registration was passed");
+            mainPage.userLogout()
+                    .isOnPage();
+            logger.log(Status.INFO, "Log out from User Account");
+            execute = true;
+        }
+            catch (Exception e)
+        {
+            e.printStackTrace();
+            logger.log(Status.FAIL, "Can't successful create registration on Buy Me" + e.getMessage());
+            execute = false;
+
+        } finally {
+            if (execute)
+            {
+                logger.log(Status.PASS, "Successful new User registration with valid values.");
+            }
+        }
+
     }
 
     @Test
@@ -82,58 +114,108 @@ public class TestSite extends BaseTest {
             4. Skip input values to the fields and press submit Login button
             5. Verifying Error message getting
          */
+        logger = extent.createTest("Test 2. Negative : User Login test with invalid values.");
 
-        mainPage.isOnPage();
-        mainPage.clickOnRegistrationButton();
-        loginPage.isOnLoginForm();
-        if (loginPage.isOnRegistrationForm()) {
-                 loginPage.clickLoginButton();
-        }
-        loginPage.submitLogin();
-        Assert.assertTrue(loginPage.isLoginErrorMessagePresent());
-        // post-condition Close Login Form window
-        loginPage.closeLoginPage();
-        Assert.assertTrue("Login Form closed successfully!",mainPage.isOnPage());
+        boolean execute = false;
+
+        try {
+                mainPage.isOnPage();
+                mainPage.clickOnRegistrationButton();
+                loginPage.isOnLoginForm();
+                logger.log(Status.INFO, "Moving to User Login form");
+                if (loginPage.isOnRegistrationForm()) {
+                    loginPage.clickLoginButton();
+                }
+                logger.log(Status.INFO,"Verifying that is on Login Form");
+                loginPage.submitLogin();
+                logger.log(Status.INFO, "Skip input values to the fields and press submit Login button");
+                Assert.assertTrue(loginPage.isLoginErrorMessagePresent());
+                logger.log(Status.INFO, "Verifying Error message getting");
+
+                // post-condition Close Login Form window
+                loginPage.closeLoginPage();
+                Assert.assertTrue("Login Form closed successfully!", mainPage.isOnPage());
+                logger.log(Status.INFO, "Closing Login Form window. Verifying returning to the Main Page.");
+                execute = true;
+
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                logger.log(Status.FAIL, "ERROR! User Login test with invalid values failed!" + e.getMessage());
+                execute = false;
+            }
+            finally
+            {
+                if (execute)
+                {
+                    logger.log(Status.PASS, "Successful User Login test with invalid values.");
+                }
+            }
     }
 
 
     @Test
-    public void c_orderCreation()
-    {
+    public void c_orderCreation() throws IOException {
         /*
             Positive test : Verify successful order creation
             1. Verify that logged as registered User
             2. Choose price, area and category of Order from drop-down menus
             3. Push submit button
-
-
+            4. Choose the gift item.
+            5. Customize Receiver name, pick the event, write the blessing, upload picture.
+            6. Choose method of the gift sending (mail / SMS). Enter email address / phone number for SMS.
+            7. Submit your choice.
          */
 
-        if (!mainPage.isOnUserAccountPage())
-        {
-            mainPage.clickOnRegistrationButton();
-            loginPage.isOnLoginForm()
-                    .enterMail(mail)
-                    .enterPassword(password)
-                    .submitLogin();
-        }
-        if (mainPage.isOnUserAccountPage())
-        {
-            System.out.println(" You present on Login Main Page");
+        logger = extent.createTest("Test 3. Positive : Order creation.");
 
-        mainPage.dropDownMenu()
-                .clickOn_FindGift_Button();
-//        giftPage.returnURL();
-        Assert.assertTrue("Successful redirect on the page for Gift choose",giftPage.isOnPage());
-        giftPage.selectGiftAdv();
-        Assert.assertTrue("Successful redirect to the Order Page", orderPage.isOnPage());
- //       orderPage.textColor();
-        orderPage.inputReceiverName("John")
-                .pickEvent()
-                .uploadPhoto("/src/configFiles/birthday.jpeg")
-                .sendGiftByMail("john@mail.com")
-                .sendOrderToReceiver();
-        Assert.assertTrue("Successful order creation" , paymentPage.isOnPage());
+        boolean created = false;
+        logger.pass("Order", MediaEntityBuilder.createScreenCaptureFromPath(takeScreenShot(driver,"order")).build());
+
+
+        try {
+                if (!mainPage.isOnUserAccountPage()) {
+                    mainPage.clickOnRegistrationButton();
+                    loginPage.isOnLoginForm()
+                            .enterMail(mail)
+                            .enterPassword(password)
+                            .submitLogin();
+                    logger.log(Status.INFO, "Login on the User account Main page");
+                }
+                if (mainPage.isOnUserAccountPage()) {
+                    System.out.println(" You present on Login Main Page");
+
+                    mainPage.dropDownMenu()
+                            .clickOn_FindGift_Button();
+                    Assert.assertTrue("Successful redirect on the page for Gift choose", giftPage.isOnPage());
+                    logger.log(Status.INFO, "Choosing options from drop-down menu and pushing submit button");
+                    giftPage.selectGiftAdv();
+                    logger.log(Status.INFO, " Select item for gift order.");
+                    Assert.assertTrue("Successful redirect to the Order Page", orderPage.isOnPage());
+                    orderPage.inputReceiverName("John")
+                            .pickEvent()
+                            .uploadPhoto("/src/configFiles/birthday.jpeg")
+                            .sendGiftByMail("john@mail.com");
+                    logger.log(Status.INFO, "Customize data for gift Receiver.");
+                    logger.pass("Order", MediaEntityBuilder.createScreenCaptureFromPath(takeScreenShot(driver,"order")).build());
+
+                    orderPage.sendOrderToReceiver();
+                    logger.log(Status.INFO,"Submit all data for Order.");
+                    Assert.assertTrue("Successful order creation", paymentPage.isOnPage());
+                    created = true;
+                }
+            } catch (Exception e)
+                {
+                   e.printStackTrace();
+                   logger.log(Status.FAIL, "ERROR! Order didn't created" + e.getMessage());
+                   created = false;
+                }
+            finally {
+                    if (created)
+                    {
+                        logger.log(Status.PASS, " Order created successfully");
+                    }
         }
 
     }
