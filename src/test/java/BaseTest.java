@@ -52,7 +52,7 @@ public class BaseTest {
 
         // Set configuration for Report
         htmlReporter.config().setDocumentTitle("Report of the Buy Me Site testing result.");
-        htmlReporter.config().setReportName("Sanity Testing");
+        htmlReporter.config().setReportName("Buy Me site - Sanity Testing");
         htmlReporter.config().setTheme(Theme.DARK);
 
         logger = extent.createTest("BaseTest" , "Parent Class for all test Classes in this project.");
@@ -95,7 +95,7 @@ public class BaseTest {
     // This method is to capture the Screenshot and return the path of the screenshot
 
     public static String takeScreenShot(WebDriver driver, String screenshotName) throws IOException {
-        String dateName = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
+        String dateName = new SimpleDateFormat("yyyy.MM.dd_hh.mm.ss").format(new Date());
         TakesScreenshot ts = (TakesScreenshot) driver;
         File source = ts.getScreenshotAs(OutputType.FILE);
 
